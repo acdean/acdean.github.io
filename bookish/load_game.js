@@ -19,7 +19,7 @@ function load_game() {
     var dateStr = "" + yyyy + mm + dd;
     //debug("Game: " + game + " Date: " + dateStr)
     // if game not given or it's the future then use today
-    if (game == "") { // i can see the future || game > dateStr) {
+    if (game == "" || game > dateStr) {
         game = dateStr;
     }
     document.write('<script language="javascript" src="games/' + game + '.js"><\/script>');

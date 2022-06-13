@@ -8,7 +8,6 @@
 </head>
 <script language="javascript">
 
-var level = "hard";
 var game;
 var winner = false;
 var reveal = false;
@@ -18,11 +17,14 @@ var redactedArray = [];
 var highlight = ""; // highlight all instances of this word
 var guessedWords = [];
 var guessedHits = [];   // TODO parallel arrays = not good
-var reservedWords = [
-    // free guesses
-    "the", "and", "of", "to", "a", "in", "i", "he", "was", "it",    
+var commonWords = [
+    "the", "and", "of", "to", "a", "in", "i", "he", "was", "it",
     "that", "his", "with", "for", "as", "is", "had", "you", "not", "at",
     "but", "on", "be", "all", "we", "her", "have", "my", "they", "by",
+    "there", "she", "him", "so", "which", "this", "me", "one", "from", "were",
+    "said", "no", "are", "or", "when", "out", "would", "what", "who", "them"
+];
+var reservedWords = [
     // also all the expected html tags
     '<p>', '</p>',
     '<h1>', '</h1>',
@@ -47,12 +49,14 @@ function init() {
 
     // warn when navigating away. not ideal...
     window.addEventListener("beforeunload", function (e) {
-        var confirmationMessage = 'Your changes will be lost.'; // text does not appear!
+        var confirmationMessage = 'your changes will be lost.'; // text does not appear!
         (e || window.event).returnValue = confirmationMessage;
         return confirmationMessage;
     });
     document.getElementById("inputword").focus();
-    document.getElementById("title").innerHTML = "Bookish " + game;
+    document.getElementById("title").innerHTML = "bookish " + game;
+    document.getElementById("blocks").selectedIndex = 0;
+    document.getElementById("words").selectedIndex = 0;
 }
 
 function solve() {
@@ -77,14 +81,13 @@ function extractTitle() {
 
 function displayText() {
     out = []
-    //out.push("<h3>Bookish " + game + "</h3>");
     if (winner) {
         out.push(winnerText());
     }
     if (reveal) {
         // add a link to the original
-        out.push("<h2>Read the whole thing at</h2>"
-            + "<h2><a href='" + url + "'>Project Gutenberg</a></h2>"
+        out.push("<h2>read the whole thing at</h2>"
+            + "<h2><a href='" + url + "'>project gutenberg</a></h2>"
             + "<br/>"
         );
     }
@@ -105,23 +108,23 @@ function winnerText() {
     }
     var pc = h * 100 / (h + m);
     return("<h1>YOU ARE A WINNER</h1>"
-        + "<h2>Bookish " + game + "</h2>"
-        + "<h2>Total Guesses: " + (h + m) + "</h2>"
-        + "<h2>Total Hits: " + h + "</h2>"
-        + "<h2>Total Misses: " + m + "</h2>"
-        + "<h2>Percentage correct: " + Math.floor(pc) + "</h2>"
+        + "<h2>bookish " + game + "</h2>"
+        + "<h2>total guesses: " + (h + m) + "</h2>"
+        + "<h2>total hits: " + h + "</h2>"
+        + "<h2>total misses: " + m + "</h2>"
+        + "<h2>percentage correct: " + Math.floor(pc) + "</h2>"
     );
 }
 
 function displayGuesses() {
-    var gText = ["<h2 class='guessTitle'>Guesses</h2>"];
+    var gText = ["<h2 class='guessTitle'>guesses</h2>"];
     //debug("Guesses " + guessedWords + ", " + guessedWords.length);
     gText.push("<table id='guessList'>");
     gText.push("<thead>");
     gText.push("<tr>");
     gText.push("<td class='count'>#</td>");
-    gText.push("<td class='guess'>Guess</td>");
-    gText.push("<td class='hits'>Hits</td>");
+    gText.push("<td class='guess'>guess</td>");
+    gText.push("<td class='hits'>hits</td>");
     gText.push("</tr>");
     gText.push("</thead>");
     gText.push("<tbody>");
@@ -169,6 +172,24 @@ function highlightWord(index) {
     hi = (hi + 1) % highs;
 }
 
+function updateTitle(word) {
+    if (title.includes(word)) {
+        // remove word from title array
+        var tmp = [];
+        for (var i = 0 ; i < title.length ; i++) {
+            if (title[i] != word) {
+                tmp.push(title[i]);
+            }
+        }
+        title = tmp;
+        //debug("Title " + title);
+    }
+    if (title.length == 0) {
+        reveal = true;
+        winner = true;
+    }
+}
+
 function guessWord(event) {
     // button sends null, keypress sends keycode of input
     if (event != null && event.keyCode != 13) {
@@ -192,21 +213,7 @@ function guessWord(event) {
         if (newWord) {  // TODO does not work
             //debug("New Word " + word);
             guessedWords.push(word);
-            if (title.includes(word)) {
-                // remove word from title array
-                var tmp = [];
-                for (var i = 0 ; i < title.length ; i++) {
-                    if (title[i] != word) {
-                        tmp.push(title[i]);
-                    }
-                }
-                title = tmp;
-                //debug("Title " + title);
-            }
-            if (title.length == 0) {
-                reveal = true;
-                winner = true;
-            }
+            updateTitle(word);
         } else {
             //debug("Old Word " + word);
         }
@@ -243,38 +250,80 @@ function gotoHighlight(hi) {
         inline: 'center'
     });
 }
+
+function setWords() {
+    var d = document.getElementById("words");
+    if (d.value == "0") {
+        return;
+    }
+    var words = d.value;
+    for (var i = 0 ; i < words ; i++) {
+        highlight = commonWords[i];
+        guessedWords.push(highlight);
+        updateTitle(highlight);
+        redactText();   // slow...
+        guessedHits.push(hits);
+    }    
+    d.disabled = true;
+    // debug(guessedWords);
+    displayText();
+    displayGuesses();
+}
+
+var blocks = "normal";
+function setBlocks() {
+    var d = document.getElementById("blocks");
+    if (d.value == "none") {
+        return;
+    }
+    blocks = d.value;
+    d.disabled = true;
+    redactText();
+    displayText();
+}
 </script>
 <body>
 <nav id="top">
-    <span id="title">Bookish xxxxxx</span>
+    <span id="title">bookish xxxxxx</span>
+    <!-- &nbsp;&nbsp;&nbsp;
+    <input type="button" value="about"/> -->
     &nbsp;&nbsp;&nbsp;
-    <input type="button" value="About"/>
+    <select name="words" id="words" onchange="return setWords()">
+        <option value="none" selected="true">insert words</option>
+        <option value="0">0</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50">50</option>
+    </select>
     &nbsp;&nbsp;&nbsp;
-    <input type="button" value="Previous"/>
+    <select name="blocks" id="blocks" onchange="return setBlocks()">
+        <option value="none" selected="true">block type</option>
+        <option value="normal">normal</option>
+        <option value="inaccurate">inaccurate</option>
+        <option value="solid">solid</option>
+    </select>
+    &nbsp;&nbsp;&nbsp;
+    <a href="previous.html" target="new"><input type="button" value="previous"/></a>
 </nav>
 <div id="middle">
     <div id="left">
-        <div id="textPane">The text goes here</div>
+        <div id="textPane">the text goes here</div>
     </div>
     <div id="right">
-        <div id="guessesPane">The guesses go here</div>
+        <div id="guessesPane">the guesses go here</div>
     </div>
 </div>
 <div id="inputPane">
-    <table>
-        <tr>
-            <td>
-                <div id="buttons">
-                    <input type="button" value="Top" onclick="return gotoTop()"/>
-                    <input type="text" id="inputword" size="20"
-                        onclick="document.getElementById('inputword').value = ''"
-                        onkeypress="return guessWord(event)"
-                        placeholder="Guess"/>
-                    <input type="button" value="Guess" onclick="return guessWord(null)"/>
-                </div>
-            </td>
-        </tr>
-    </table>
+    <div id="buttons">
+        <input type="button" value="top" onclick="return gotoTop()"/>
+        <input type="text" id="inputword" size="20"
+            onclick="document.getElementById('inputword').value = ''"
+            onkeypress="return guessWord(event)"
+            placeholder="guess"/>
+        <input type="button" value="guess" onclick="return guessWord(null)"/>
+    </div>
 </div>
 <script>
 game = load_game();

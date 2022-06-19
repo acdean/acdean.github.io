@@ -216,7 +216,8 @@ function guessWord(event) {
         return;
     }
     var d = document.getElementById("inputword");
-    word = d.value.toLowerCase();
+    // limit input to lowercase alphanumerics and apostrophe
+    word = d.value.toLowerCase().trim().replace(/[^a-z0-9']/g, "");
     if (word == "") {
         // TODO next highlighted word?
         return;

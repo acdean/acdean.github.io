@@ -252,7 +252,7 @@ function guessWord(event) {
         }
         displayText();      // show the text
         displayGuesses();   // show the guesses
-        gotoGuess();
+        gotoGuess(word);
         //debug("Guesses " + guessedWords.length + " Hits: " + guessedHits);
         if (winner) {
             gotoTop();

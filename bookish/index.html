@@ -217,13 +217,14 @@ function guessWord(event) {
     }
     var d = document.getElementById("inputword");
     // limit input to lowercase alphanumerics and apostrophe
+    var word = d.value.toLowerCase().trim();
+    if (word == 'answer please') {
+        solve();
+        return;
+    }
     word = d.value.toLowerCase().trim().replace(/[^a-z0-9']/g, "");
     if (word == "") {
         // TODO next highlighted word?
-        return;
-    }
-    if (word == 'answer please') {
-        solve();
         return;
     }
     // clear box

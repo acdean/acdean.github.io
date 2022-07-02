@@ -7,7 +7,7 @@ function load_game() {
     game = document.location.search.substring(1);
     // get dateStr for current date
     var date = new Date();
-    var yyyy = "" + date.getUTCFullYear();
+    //var yyyy = "" + date.getUTCFullYear();
     var mm = date.getUTCMonth() + 1;
     if (mm < 10) {
         mm = "0" + mm;
@@ -16,7 +16,7 @@ function load_game() {
     if (dd < 10) {
         dd = "0" + dd
     }
-    var dateStr = "" + yyyy + mm + dd;
+    var dateStr = "" + mm + dd;
     //debug("Game: " + game + " Date: " + dateStr)
     // if game not given or it's the future then use today
     if (game == "" || game > dateStr) {

@@ -67,7 +67,7 @@ function solve() {
 var title = [];
 function extractTitle() {
     var t = text.match(/<h1>(.*?)<\/h1>/);  // title string
-    var tbits = t[1].split(/ /);
+    var tbits = t[1].split(/\W+/);
     for (var i = 0 ; i < tbits.length ; i++) {
         var titleWord = tbits[i].toLowerCase();
         if (!reservedWords.includes(titleWord)) {

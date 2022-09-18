@@ -340,7 +340,7 @@ function setBlocks() {
     <!-- &nbsp;&nbsp;&nbsp;
     <input type="button" value="about"/> -->
     &nbsp;&nbsp;&nbsp;
-    <select name="words" id="words" onchange="return setWords()">
+    <select title="you can automatically enter the most common words here" name="words" id="words" onchange="return setWords()">
         <option value="none" selected="true">insert words</option>
         <option value="0">0</option>
         <option value="10">10</option>
@@ -350,18 +350,18 @@ function setBlocks() {
         <option value="50">50</option>
     </select>
     &nbsp;&nbsp;&nbsp;
-    <select name="blocks" id="blocks" onchange="return setBlocks()">
+    <select title="change the redacting style here" name="blocks" id="blocks" onchange="return setBlocks()">
         <option value="none" selected="true">block type</option>
         <option value="normal">normal</option>
         <option value="inaccurate">inaccurate</option>
         <option value="solid">solid</option>
     </select>
     &nbsp;&nbsp;&nbsp;
-    <a href="previous.html" target="new"><input type="button" value="previous"/></a>
+    <a title="play previous games here" href="previous.html" target="new"><input type="button" value="previous"/></a>
 </nav>
 <div id="middle">
     <div id="left">
-        <div id="textPane">the text goes here</div>
+        <div id="textPane">Something has gone wrong...</div>
     </div>
     <div id="right">
         <div id="guessesPane">the guesses go here</div>
@@ -373,7 +373,8 @@ function setBlocks() {
         <input type="text" id="inputword" size="20"
             onclick="document.getElementById('inputword').value = ''"
             onkeypress="return guessWord(event)"
-            placeholder="guess"/>
+            placeholder="guess"
+            title="enter 'answer please' to quit"/>
         <input type="button" value="guess" onclick="return guessWord(null)"/>
     </div>
 </div>

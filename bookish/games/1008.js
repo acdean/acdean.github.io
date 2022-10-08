@@ -1,6 +1,6 @@
 var url = "https://www.gutenberg.org/ebooks/8486";
 var text = ""
-    + "<h1>“Oh, Whistle, And I'll Come To You, My Lad”</h1> "
+    + "<h1>“Oh, Whistle, And I'll Come To You, My Lad”</h1>"
     + "<h2>M R James</h2>"
     + "<br/>"
     + "<p>“I suppose you will be getting away pretty soon, now Full Term is over, Professor,” said a person not in the story to the Professor of Ontography, soon after they had sat down next to each other at a feast in the hospitable hall of St James's College.</p>"

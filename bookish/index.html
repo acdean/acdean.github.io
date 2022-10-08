@@ -71,7 +71,7 @@ function extractTitle() {
     var tbits = t[1].split(/[^\w']+/);
     for (var i = 0 ; i < tbits.length ; i++) {
         var titleWord = tbits[i].toLowerCase();
-        if (!reservedWords.includes(titleWord)) {
+        if (titleWord != "" && !reservedWords.includes(titleWord)) {
             title.push(titleWord);
         }
     }

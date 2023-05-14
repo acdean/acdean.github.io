@@ -24,6 +24,8 @@ const archive = [
 ];
 
 var out = [];
+var r = Math.floor(Math.random() * archive.length)
+out.push("<h2><a href='index.html?" + archive[r] + "'>random game</a></h2>");
 for (var i = 0 ; i < archive.length ; i++) {
     var dStr = archive[i];
     out.push("<h2><a href='index.html?" + dStr + "'>" + dStr + "</a></h2>");

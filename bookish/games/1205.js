@@ -1,7 +1,7 @@
 var url = "https://www.gutenberg.org/ebooks/284";
 var text = ""
     + "<h1>The House of Mirth</h1>"
-    + "<h2>Edith Wharton</h1>"
+    + "<h2>Edith Wharton</h2>"
     + "<br/>"
     + "<h3>Book One</h3>"
     + "<h3>Chapter 1</h3>"
